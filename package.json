@@ -1,0 +1,32 @@
+{
+  "name": "secure-random-uniform",
+  "version": "1.0.0",
+  "description": "Generate secure, random, uniform integers, compensating for modulo bias",
+  "main": "index.js",
+  "dependencies": {
+    "randombytes": "^2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node verification"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilbayes/secure-random-uniform.git"
+  },
+  "keywords": [
+    "secure",
+    "random",
+    "uniform",
+    "arc4random_uniform",
+    "crypto",
+    "modulo bias",
+    "bias"
+  ],
+  "author": "Emil Bay <github@tixz.dk>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emilbayes/secure-random-uniform/issues"
+  },
+  "homepage": "https://github.com/emilbayes/secure-random-uniform#readme"
+}
