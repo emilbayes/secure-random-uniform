@@ -61,7 +61,7 @@ have a ~ 0.5 chance of doing a redraw. The number of redraws required can be
 modelled by as `0.5^(redraws)` which quickly converges towards zero. In practise
 only one draw is required on average.
 
-See [`verification.js`](verification.js) for a deterministic test of the algorithm
+See [`verification.js`](verification.js) for a deterministic test of the algorithm.
 
 ## License
 
