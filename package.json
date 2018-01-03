@@ -4,12 +4,11 @@
   "description": "Generate secure, random, uniform integers, compensating for modulo bias",
   "main": "index.js",
   "dependencies": {
-    "randombytes": "^2.0.3"
+    "nanoassert": "^1.1.0",
+    "randombytes": "^2.0.3",
+    "sodium-universal": "^2.0.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "node verification"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emilbayes/secure-random-uniform.git"

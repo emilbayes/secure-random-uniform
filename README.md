@@ -8,34 +8,20 @@
 var secureRandom = require('secure-random-uniform')
 
 // Numbers from [0, 2000)
-var tt = secureRandom(2000)
+secureRandom(2000)
 
-tt() // sample
-tt()
-// ...
-tt()
-```
+// Numbers from [100, 110)
+secureRandom(10) + 100
 
-Other common use cases:
-
-```js
-// Numbers from [0, 2000] (inclusive)
-var incl = secureRandom(2001)
-
-// Numbers from [100, 200]
-var h = secureRandom(100)
-
-h() + 100
-h() + 100
-
+// Numbers from [-10, 10]
+secureRandom(21) - 10
 ```
 
 ## API
 
-#### `secureRandomUniform(limit)`
-Returns a function that can be called repeatedly to sample from the uniform
-distribution `[0, limit)` (limit exclusive). Note that limit must not be larger
-than `2^48 - 1`.
+#### `var num = secureRandomUniform(limit)`
+Returns a number from the uniform distribution `[0, limit)` (limit exclusive).
+Note that limit must not be larger than `2^48 - 1`.
 
 ## Background
 
@@ -61,7 +47,36 @@ have a ~ 0.5 chance of doing a redraw. The number of redraws required can be
 modelled by as `0.5^(redraws)` which quickly converges towards zero. In practise
 only one draw is required on average.
 
-See [`verification.js`](verification.js) for a deterministic test of the algorithm
+See [`verify-modulo-reduction.js`](verify-modulo-reduction.js) for a deterministic test of the algorithm
+
+The next issue is transforming random bytes into unsigned numbers. We can
+efficiently transform bytes into signed 32-bit integers in JS with:
+
+```js
+(byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])
+```
+
+To make the number unsigned we can do a zero-fill right shift, which will cause
+the sign bit to become 0:
+
+```js
+((byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])) >>> 0
+```
+
+Lastly, to go beyond 32-bit numbers we will have to use floating point
+operations:
+
+```js
+0x10000000000 * byte[5]
++ 0x100000000 * byte[4]
++ (((byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])) >>> 0)
+```
+
+Note that the bitwise operations have been wrapped in parenthesis, otherwise
+the last add operation will become a 32-bit add, reducing the number modulo 2^32
+
+See [`verify-readle.js`](verify-readle.js) for verification against a known
+implementation of converting bytes to unsigned integers.
 
 ## License
 
