@@ -1,6 +1,6 @@
 {
   "name": "secure-random-uniform",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Generate secure, random, uniform integers, compensating for modulo bias",
   "main": "index.js",
   "dependencies": {
