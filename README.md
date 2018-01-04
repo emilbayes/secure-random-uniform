@@ -25,6 +25,8 @@ Note that limit must not be larger than `2^48 - 1`.
 
 ## Background
 
+### Modulo reduction: Bytes to integers
+
 A naive implementation might look like:
 
 ```js
@@ -49,31 +51,34 @@ only one draw is required on average.
 
 See [`verify-modulo-reduction.js`](verify-modulo-reduction.js) for a deterministic test of the algorithm
 
+### Random bytes to integers
+
 The next issue is transforming random bytes into unsigned numbers. We can
 efficiently transform bytes into signed 32-bit integers in JS with:
 
 ```js
-(byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])
+(byte[3] << 24) ^ (byte[2] << 16) ^ (byte[1] << 8) ^ (byte[0])
 ```
 
 To make the number unsigned we can do a zero-fill right shift, which will cause
 the sign bit to become 0:
 
 ```js
-((byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])) >>> 0
+((byte[3] << 24) ^ (byte[2] << 16) ^ (byte[1] << 8) ^ (byte[0])) >>> 0
 ```
 
-Lastly, to go beyond 32-bit numbers we will have to use floating point
-operations:
+To go beyond 32-bit integers, to the maximum of 53-bit integers representable in
+Javascript `Number`s (IEEE 754), we can construct the remaining 21 bits and move
+them up using a floating point multiplication.
 
 ```js
-0x10000000000 * byte[5]
-+ 0x100000000 * byte[4]
-+ (((byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])) >>> 0)
+((((buf[7] & 0b00000111) << 21) ^ (buf[6] << 16) ^ (buf[5] << 8) ^ (buf[4])) >>> 0) * 0x100000000
++ (((byte[3] << 24) ^ (byte[2] << 16) ^ (byte[1] << 8) ^ (byte[0])) >>> 0)
 ```
 
 Note that the bitwise operations have been wrapped in parenthesis, otherwise
-the last add operation will become a 32-bit add, reducing the number modulo 2^32
+the add and multiplication operation will become 32-bit operations,
+reducing the number modulo 2^32
 
 See [`verify-readle.js`](verify-readle.js) for verification against a known
 implementation of converting bytes to unsigned integers.
