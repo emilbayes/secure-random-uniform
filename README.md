@@ -21,7 +21,7 @@ secureRandom(21) - 10
 
 #### `var num = secureRandomUniform(limit)`
 Returns a number from the uniform distribution `[0, limit)` (limit exclusive).
-Note that limit must not be larger than `2^48 - 1`.
+Note that limit must not be larger than `2^53 - 1` (`Number.MAX_SAFE_INTEGER`).
 
 ## Background
 
