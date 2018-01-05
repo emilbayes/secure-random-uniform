@@ -57,14 +57,14 @@ The next issue is transforming random bytes into unsigned numbers. We can
 efficiently transform bytes into signed 32-bit integers in JS with:
 
 ```js
-(byte[3] << 24) ^ (byte[2] << 16) ^ (byte[1] << 8) ^ (byte[0])
+(byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])
 ```
 
 To make the number unsigned we can do a zero-fill right shift, which will cause
 the sign bit to become 0:
 
 ```js
-((byte[3] << 24) ^ (byte[2] << 16) ^ (byte[1] << 8) ^ (byte[0])) >>> 0
+((byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])) >>> 0
 ```
 
 To go beyond 32-bit integers, to the maximum of 53-bit integers representable in
@@ -72,8 +72,8 @@ Javascript `Number`s (IEEE 754), we can construct the remaining 21 bits and move
 them up using a floating point multiplication.
 
 ```js
-((((buf[7] & 0b00000111) << 21) ^ (buf[6] << 16) ^ (buf[5] << 8) ^ (buf[4])) >>> 0) * 0x100000000
-+ (((byte[3] << 24) ^ (byte[2] << 16) ^ (byte[1] << 8) ^ (byte[0])) >>> 0)
+((((buf[6] & 0b00011111) << 16) | (buf[5] << 8) | (buf[4])) >>> 0) * 0x100000000
++ (((byte[3] << 24) | (byte[2] << 16) | (byte[1] << 8) | (byte[0])) >>> 0)
 ```
 
 Note that the bitwise operations have been wrapped in parenthesis, otherwise
