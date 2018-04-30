@@ -17,6 +17,18 @@ secureRandom(10) + 100
 secureRandom(21) - 10
 ```
 
+### BigInt support
+
+```js
+var secureRandom = require('secure-random-uniform/bigint')
+
+// Numbers from [0, 2^64)
+secureRandom(2n ** 64n)
+
+// Numbers from [0, googol)
+secureRandom(10n ** 100n)
+```
+
 ## API
 
 #### `var num = secureRandomUniform(limit)`
