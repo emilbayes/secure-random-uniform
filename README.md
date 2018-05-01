@@ -17,7 +17,7 @@ secureRandom(10) + 100
 secureRandom(21) - 10
 ```
 
-### BigInt support
+### BigInt support (Experimental!)
 
 ```js
 var secureRandom = require('secure-random-uniform/bigint')
