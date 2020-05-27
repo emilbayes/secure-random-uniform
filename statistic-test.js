@@ -13,7 +13,7 @@ while (true) {
   var s = template.slice()
   var r = template.slice()
 
-  for (var i = 0; i < 1e7; i++) {
+  for (i = 0; i < 1e7; i++) {
     r[rand(len)]++
     s[sodium.randombytes_uniform(len)]++
   }
