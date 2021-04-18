@@ -1,7 +1,7 @@
 'use strict'
 
 var assert = require('nanoassert')
-var sodium = require('sodium-native')
+var sodium = require('sodium-universal')
 
 var buf = new Uint8Array(7)
 var MAX = Number.MAX_SAFE_INTEGER
