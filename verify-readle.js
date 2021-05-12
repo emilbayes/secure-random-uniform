@@ -1,4 +1,4 @@
-var sodium = require('sodium-native')
+var sodium = require('sodium-universal')
 var buf = Buffer.alloc(8).fill(0xff)
 
 var max = ((((buf[6] & 0b00011111) << 16) | (buf[5] << 8) | (buf[4])) >>> 0) * 0x100000000 + // 21 bits, shifted left 32 bits
